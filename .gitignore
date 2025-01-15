@@ -6,6 +6,8 @@
 *.lo
 *.o
 *.obj
+*~
+obj/
 
 # Precompiled Headers
 *.gch
@@ -30,3 +32,5 @@
 *.exe
 *.out
 *.app
+main
+test_runner
