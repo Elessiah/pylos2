@@ -4,6 +4,8 @@
 // Pylos2
 // ************************************************
 
+#include	<iostream>
+
 #include	"neuron.hh"
 
 ef::Neuron::Neuron()
@@ -22,9 +24,9 @@ ef::Neuron::Neuron(std::vector<Neuron>			&neuronInputs)
   s_input	input;
   size_t	i;
 
-  input.coef = ((double)(rand() % 1000) / 100) + 1;
   for (i = 0; i < neuronInputs.size(); i += 1)
     {
+      input.coef = ((double)(rand() % 1000) / 100) + 1;
       input.neuron = &neuronInputs[i];
       inputs.push_back(input);
     }
@@ -73,6 +75,7 @@ bool		ef::Neuron::operator==(const Neuron	&other) const
     {
       if (inputs[i].coef != other.inputs[i].coef)
 	return (false);
+      //      std::cout << inputs[i].coef << " == " << other.inputs[i].coef << std::endl;
     }
   return (true);
 }

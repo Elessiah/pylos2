@@ -27,6 +27,7 @@ namespace				ef
     void				resetNetworkReady();
     void				save(std::ofstream		&file) const;
     void				load(std::ifstream		&file);
+    bool				verify();
 
   private:
     std::vector<std::vector<Neuron>>	neurons;

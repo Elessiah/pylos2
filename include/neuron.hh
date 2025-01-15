@@ -38,6 +38,7 @@ namespace			ef
     void			load(std::ifstream			&file,
 				     std::vector<Neuron>		&neuronInputs);
     void			resetReady();
+    bool			verify(std::vector<Neuron>		&prevLayer);
 
   private:
     bool			isReady;

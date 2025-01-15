@@ -23,6 +23,7 @@ TEST(NETWORK_SAVE_TEST, Test_Save_Load)
   ef::Network			loadNetwork(loadFile);
 
   loadFile.close();
+  EXPECT_EQ(Network.verify(), true);
   EXPECT_EQ(Network, loadNetwork);
   std::remove(filename.c_str());
 }
