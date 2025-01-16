@@ -22,16 +22,19 @@ ef::Network::Network(std::vector<int>		&build)
 	    neurons[i].emplace_back(neurons[i - 1]);
 	}
     }
+  nbLinks = getNbLinks();
 }
 
 ef::Network::Network(std::ifstream		&file)
 {
   load(file);
+  nbLinks = getNbLinks();
 }
 
 ef::Network::Network(const Network		&other)
+  : neurons(other.neurons),
+    nbLinks(other.nbLinks)
 {
-  *this = other;
 }
 
 ef::Network		&ef::Network::operator=(const Network	&other)

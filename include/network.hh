@@ -8,7 +8,10 @@
 
 #define					__EF_NETWORK_HH__
 
-#include				"neuron.hh"
+# include				"neuron.hh"
+# include				"learnSubjects.hh"
+
+# define	INPUT_LAYER		0
 
 namespace				ef
 {
@@ -20,17 +23,24 @@ namespace				ef
     Network(const Network		&other);
     ~Network();
 
-    Network				&operator=(const Network	&other);
-    bool				operator==(const Network	&other) const;
-    bool				operator!=(const Network	&other) const;
+    Network				&operator=(const Network			&other);
+    bool				operator==(const Network			&other) const;
+    bool				operator!=(const Network			&other) const;
     std::vector<double>			getOutput();
+    std::vector<double>			getOutput(std::vector<double>			&inputValues);
     void				resetNetworkReady();
-    void				save(std::ofstream		&file) const;
-    void				load(std::ifstream		&file);
+    void				save(std::ofstream				&file) const;
+    void				load(std::ifstream				&file);
     bool				verify();
+    double				primaryLearning(std::vector<s_learnSubjects>	&subjects);
 
   private:
     std::vector<std::vector<Neuron>>	neurons;
+    size_t				nbLinks;
+
+    double				examen(std::vector<s_learnSubjects>		&subjects);
+    double				averageVector(std::vector<double>		&values);
+    size_t				getNbLinks();
   };
 }
 

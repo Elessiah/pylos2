@@ -34,11 +34,15 @@ namespace			ef
     bool			operator==(const Neuron			&other) const;
     bool			operator!=(const Neuron			&other) const;
     double			getOutput();
+    void		        setInput(double				value);
     void			save(std::ofstream			&file) const;
     void			load(std::ifstream			&file,
 				     std::vector<Neuron>		&neuronInputs);
     void			resetReady();
     bool			verify(std::vector<Neuron>		&prevLayer);
+    void			tryNewCoef(int				nLink,
+					   double			coefEdit);
+    void			back();
 
   private:
     bool			isReady;
@@ -46,6 +50,8 @@ namespace			ef
     double			outputValue;
     double			inputValue;
     std::vector<s_input>	inputs;
+    double			lastCoef;
+    size_t			lastEditInput;
 
     double			compute();
     bool			writeHeader(std::ofstream		&file) const;

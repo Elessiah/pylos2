@@ -1,0 +1,2 @@
+Le but de la fonction primary learning c'est de changer tous les coefs de chaque neurones un à la fois et de voir tout en regardant le résultat sur plusieurs tests pour ne pas tout dérégler.
+Le mieux c'est de garder une range max par neurone.
