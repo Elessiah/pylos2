@@ -12,5 +12,6 @@ double			ef::Neuron::getOutput()
     return (outputValue);
   if (inputs.size() == 0)
     return (inputValue);
-  return (compute());
+  compute();
+  return (outputValue);
 }

@@ -17,7 +17,7 @@ double			ef::Network::primaryLearning(std::vector<s_learnSubjects>	&subjects)
   size_t		passedLinks;
 
   currentScore = examen(subjects);
-  std::cout << "Starting Score is : " << currentScore << std::endl;
+  //std::cout << "Starting Score is : " << currentScore << std::endl;
   passedLinks = 0;
   for (nLayer = 1; nLayer < neurons.size(); nLayer += 1)
     {
@@ -25,24 +25,11 @@ double			ef::Network::primaryLearning(std::vector<s_learnSubjects>	&subjects)
 	{
 	  for (nLink = 0; nLink < neurons[nLayer - 1].size(); nLink += 1)
 	    {
-	      if (currentScore > 10 || currentScore < -10)
-		{
-		  double	tryScore;
- 
-		  neurons[nLayer][nNeuron].tryNewCoef(nLink, 0.5);
-		  tryScore = examen(subjects);
-		  if ((currentScore < 0 && tryScore < currentScore)
-		      || (currentScore > 0 && tryScore > currentScore))
-		    {
-		      neurons[nLayer][nNeuron].back();
-		    }
-		  else
-		    currentScore = tryScore;
-		}
+	      tryCoef(subjects, currentScore, nLayer, nNeuron, nLink);
 	      passedLinks += 1;
 	    }
-	  std::cout << "Progression : " << passedLinks * 100 / nbLinks << "% ("
-		    << passedLinks << " / " << nbLinks << ")" << std::endl;
+	      //	  std::cout << "Progression : " << passedLinks * 100 / nbLinks << "% ("
+	  //    << passedLinks << " / " << nbLinks << ")" << std::endl;
 	}
     }
   std::cout << "Final Score : " << currentScore << std::endl;

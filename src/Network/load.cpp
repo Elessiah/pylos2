@@ -26,11 +26,11 @@ void		ef::Network::load(std::ifstream	&file)
 	{
 	  if (nLayer == 0)
 	    {
-	      std::vector<ef::Neuron>	emptyVector;	  
-	      neurons[nLayer].emplace_back(file, emptyVector);
+	      std::vector<std::shared_ptr<Neuron>>	emptyVector;	  
+	      neurons[nLayer].emplace_back(std::make_shared<Neuron>(file, emptyVector, threadPool));
 	    }
 	  else
-	    neurons[nLayer].emplace_back(file, neurons[nLayer - 1]);
+	    neurons[nLayer].emplace_back(std::make_shared<Neuron>(file, neurons[nLayer - 1], threadPool));
 	}
     }
 }

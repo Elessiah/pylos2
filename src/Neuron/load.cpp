@@ -6,8 +6,8 @@
 
 #include		"neuron.hh"
 
-void			ef::Neuron::load(std::ifstream		&file,
-					 std::vector<Neuron>	&neuronInputs)
+void			ef::Neuron::load(std::ifstream				&file,
+					 std::vector<std::shared_ptr<Neuron>>	&neuronInputs)
 {
   if (readHeader(file) == false)
     throw std::runtime_error("Load of header has failed !");

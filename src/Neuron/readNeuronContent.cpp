@@ -6,8 +6,8 @@
 
 #include		"neuron.hh"
 
-bool			ef::Neuron::readNeuronContent(std::ifstream		&file,
-						      std::vector<Neuron>	&neuronInputs)
+bool			ef::Neuron::readNeuronContent(std::ifstream				&file,
+						      std::vector<std::shared_ptr<Neuron>>	&neuronInputs)
 {
   size_t		i;
   s_input		new_input;
@@ -17,7 +17,7 @@ bool			ef::Neuron::readNeuronContent(std::ifstream		&file,
       file.read((char *)&new_input.coef, sizeof(double));
       if (!file.good())
 	return (false);
-      new_input.neuron = &neuronInputs[i];
+      new_input.neuron = neuronInputs[i];
       inputs.push_back(new_input);
     }
   return (true);

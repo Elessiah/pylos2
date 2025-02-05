@@ -6,7 +6,10 @@
 
 #include		"neuron.hh"
 
-double			ef::Neuron::compute()
+#include		<cmath>
+
+
+void			ef::Neuron::compute()
 {
   size_t		i;
 
@@ -15,5 +18,6 @@ double			ef::Neuron::compute()
     outputValue += inputs[i].neuron->getOutput() * inputs[i].coef;
   if (isReverse)
     outputValue *= -1;
-  return (outputValue);
+  outputValue = (1 / (1  + exp(outputValue)));
+  isReady = true;
 }

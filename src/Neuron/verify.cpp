@@ -6,7 +6,7 @@
 
 #include	"neuron.hh"
 
-bool		ef::Neuron::verify(std::vector<Neuron>	&prevLayer)
+bool		ef::Neuron::verify(std::vector<std::shared_ptr<Neuron>>	&prevLayer)
 {
   if (prevLayer.size() != inputs.size())
     return (false);
@@ -14,7 +14,7 @@ bool		ef::Neuron::verify(std::vector<Neuron>	&prevLayer)
 
   for (nNeuron = 0; nNeuron < prevLayer.size(); nNeuron += 1)
     {
-      if (&prevLayer[nNeuron] != inputs[nNeuron].neuron)
+      if (*prevLayer[nNeuron] != *inputs[nNeuron].neuron)
 	return (false);
     }
   return (true);

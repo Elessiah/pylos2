@@ -13,5 +13,5 @@ void			ef::Network::resetNetworkReady()
 
   for (nLayer = 0; nLayer < neurons.size(); nLayer += 1)
     for (nNeuron = 0; nNeuron < neurons[nLayer].size(); nNeuron += 1)
-      neurons[nLayer][nNeuron].resetReady();
+      neurons[nLayer][nNeuron]->resetReady();
 }

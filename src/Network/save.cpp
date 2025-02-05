@@ -24,7 +24,7 @@ void		ef::Network::save(std::ofstream	&file) const
       if (!file.good())
 	throw std::runtime_error("Save of nbNeuron has failed !");
       for (nNeuron = 0; nNeuron < nbNeuron; nNeuron += 1)
-	neurons[nLayer][nNeuron].save(file);
+	neurons[nLayer][nNeuron]->save(file);
     }
   
 }

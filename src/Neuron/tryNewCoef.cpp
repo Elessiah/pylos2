@@ -11,5 +11,8 @@ void			ef::Neuron::tryNewCoef(int		nLink,
 {
   lastCoef = inputs[nLink].coef;
   lastEditInput = nLink;
-  inputs[nLink].coef *= coefEdit;
+  if (inputs[nLink].coef != 0)
+    inputs[nLink].coef *= coefEdit;
+  else
+    inputs[nLink].coef = coefEdit;
 }

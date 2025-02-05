@@ -15,13 +15,14 @@ std::vector<double>	ef::Network::getOutput()
   size_t		lastLayer;
   size_t		i;
 
+  compute();
   lastLayer = neurons.size() - 1;
   for (i = 0; i < neurons[lastLayer].size(); i += 1)
-    result.emplace_back(neurons[lastLayer][i].getOutput());
+    result.emplace_back(neurons[lastLayer][i]->getOutput());
   return (result);
 }
 
-std::vector<double>	ef::Network::getOutput(std::vector<double>	&inputValues)
+std::vector<double>	ef::Network::getOutput(const std::vector<double>	&inputValues)
 {
   if (inputValues.size() != neurons[INPUT_LAYER].size()) 
     throw std::runtime_error("Not enought input values in getOutput parameters !");
@@ -29,6 +30,6 @@ std::vector<double>	ef::Network::getOutput(std::vector<double>	&inputValues)
   size_t		nNeuron;
 
   for (nNeuron = 0; nNeuron < inputValues.size(); nNeuron += 1)
-    neurons[INPUT_LAYER][nNeuron].setInput(inputValues[nNeuron]);
-  return getOutput();
+    neurons[INPUT_LAYER][nNeuron]->setInput(inputValues[nNeuron]);
+  return (getOutput());
 }

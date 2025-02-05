@@ -10,6 +10,10 @@
 
 # include			<vector>
 
+# define	EXAM_MORPION	0
+# define        EXAM_AND	1
+# define        EXAM_XOR	2
+
 namespace			ef
 {
   struct				s_learnSubjects

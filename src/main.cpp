@@ -5,20 +5,23 @@
 // ************************************************
 
 #include			"network.hh"
+#include			"morpion.hh"
+#include			"utils.hh"
 
-static double			myAbs(double	value)
-{
-  if (value < 0)
-    return (-value);
-  return (value);
-}
+#define		HUMAN		0
+#define		BOT		1
+
+#include			<iostream>
 
 int				main(void)
 {
-  std::vector<int>		build = { 9, 6, 3, 2};
+  std::vector<int>		build = { 2, 1 };
   ef::Network			network(build);
-  std::vector<ef::s_learnSubjects>	exam = ef::getExam(0);
+  std::ofstream			saveFile("XorNetwork.bin", std::ios::binary);
 
-  while (myAbs(network.primaryLearning(exam)) > 10);
+  network.learning(0, EXAM_XOR);
+  network.save(saveFile);
+  saveFile.close();
+  //  network.retropropagation(EXAM_AND, 0.001);
   return (0);
 }

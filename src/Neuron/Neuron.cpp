@@ -5,50 +5,75 @@
 // ************************************************
 
 #include	<iostream>
+#include	<stdexcept>
 
 #include	"neuron.hh"
 
-ef::Neuron::Neuron()
-  : isReady(false),
-    isReverse(rand() % 2),
-    outputValue(0),
-    inputValue(0)
+ef::Neuron::Neuron(ef::ThreadPool					&_threadPool)
+  : isReady(false)
+  , isReverse(rand() % 2)
+  , outputValue(0)
+  , inputValue(0)
+  , threadPool(_threadPool)
 {
 }
 
-ef::Neuron::Neuron(std::vector<Neuron>			&neuronInputs)
-  : isReady(false),
-    isReverse(rand() % 2),
-    outputValue(0)
+ef::Neuron::Neuron(std::vector<std::shared_ptr<Neuron>>			&neuronInputs,
+		   ef::ThreadPool					&_threadPool)
+  : isReady(false)
+  , isReverse(rand() % 2)
+  , outputValue(0)    
+  , threadPool(_threadPool)
 {
   s_input	input;
   size_t	i;
 
   for (i = 0; i < neuronInputs.size(); i += 1)
     {
-      input.coef = ((double)(rand() % 1000) / 100) + 1;
-      input.neuron = &neuronInputs[i];
+      input.coef = ((double)(rand() % 1000) / 1000) + 1;
+      input.neuron = neuronInputs[i];
       inputs.push_back(input);
     }
 }
 
-ef::Neuron::Neuron(std::ifstream			&file,
-		   std::vector<Neuron>			&neuronInputs)
+ef::Neuron::Neuron(std::ifstream					&file,
+		   std::vector<std::shared_ptr<Neuron>>			&neuronInputs,
+		   ef::ThreadPool					&_threadPool)
   : isReady(false)
+  , threadPool(_threadPool)
 {
   load(file, neuronInputs);
 }
 
-ef::Neuron::Neuron(const Neuron				&other)
- : isReady(false)
-  , isReverse(other.isReverse)
+ef::Neuron::Neuron(const std::shared_ptr<Neuron>			&other)
+  : isReady(false)
+  , isReverse(other->isReverse)
   , outputValue(0)
-  , inputValue(other.inputValue)
-  , inputs(other.inputs)
+  , inputValue(other->inputValue)
+  , inputs(other->inputs)
+  , threadPool(other->threadPool)
 {
 }
 
-ef::Neuron	&ef::Neuron::operator=(const Neuron	&other)
+ef::Neuron::Neuron(const std::shared_ptr<Neuron>			&other,
+		   std::vector<std::shared_ptr<Neuron>>			&prevLayer,
+		   ef::ThreadPool					&_threadPool)
+  : isReady(false)
+  , isReverse(other->isReverse)
+  , outputValue(0)
+  , inputValue(other->inputValue)
+  , threadPool(_threadPool)
+{
+  if (prevLayer.size() != other->inputs.size())
+    throw std::runtime_error("Neuron inputs size different from other inputs size");
+  size_t	i;
+
+  for (i = 0; i < other->inputs.size(); i++)
+    inputs.emplace_back(s_input{ prevLayer[i], other->inputs[i].coef });
+}
+
+
+ef::Neuron	&ef::Neuron::operator=(const Neuron			&other)
 {
   if (this != &other)
     {
@@ -61,14 +86,14 @@ ef::Neuron	&ef::Neuron::operator=(const Neuron	&other)
   return (*this);
 }
 
-bool		ef::Neuron::operator==(const Neuron	&other) const
+bool		ef::Neuron::operator==(const Neuron			&other) const
 {
   if (isReverse != other.isReverse)
     return (false);
-  if (inputs.size() == 0 && inputValue == other.inputValue)
-    return (true);
-  else if (inputs.size() == 0 || inputs.size() != other.inputs.size())
+  if (inputs.size() != other.inputs.size())
     return (false);
+  if (inputs.size() == 0)
+    return (true);
   size_t	i;
 
   for (i = 0; i < inputs.size(); i += 1)
@@ -80,7 +105,7 @@ bool		ef::Neuron::operator==(const Neuron	&other) const
   return (true);
 }
 
-bool		ef::Neuron::operator!=(const Neuron	&other) const
+bool		ef::Neuron::operator!=(const Neuron			&other) const
 {
   return (!(*this == other));
 }

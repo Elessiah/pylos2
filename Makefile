@@ -1,9 +1,7 @@
 # Variables de compilation
 CXX = g++
 CXXFLAGS = -Wall -Wextra -g -ggdb -I./include --coverage
-LDFLAGS = --coverage -lgtest -lgtest_main -pthread -llapin -lsfml-graphics -lsfml-audio -lsfml-window \
-          -lsfml-system -lstdc++ -lm -ldl -lopencv_imgproc -lopencv_highgui -lopencv_objdetect \
-          -lopencv_videoio -lopencv_core -lavcall
+LDFLAGS = --coverage -lgtest -lgtest_main -pthread
 
 SRCDIR = ./src
 INCDIR = ./include

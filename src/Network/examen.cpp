@@ -5,8 +5,9 @@
 // ************************************************
 
 #include		"network.hh"
+#include		"utils.hh"
 
-double			ef::Network::examen(std::vector<s_learnSubjects>		&subjects)
+double			ef::Network::examen(const std::vector<s_learnSubjects>		&subjects)
 {
   std::vector<double>	outputs;
   double		globalResult;
@@ -18,7 +19,7 @@ double			ef::Network::examen(std::vector<s_learnSubjects>		&subjects)
     {
       outputs = getOutput(subjects[nSubject].inputValues);
       for (nOutput = 0; nOutput < outputs.size(); nOutput += 1)
-	outputs[nOutput] -= subjects[nSubject].expectedResults[nOutput];
+        outputs[nOutput] = ef::dbAbs(subjects[nSubject].expectedResults[nOutput] - outputs[nOutput]);
       globalResult += averageVector(outputs);
     }
   if (subjects.size() != 0)
