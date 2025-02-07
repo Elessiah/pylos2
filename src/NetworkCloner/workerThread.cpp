@@ -39,5 +39,7 @@ void					ef::NetworkCloner::workerThread(ef::Network	network)
 	      main.notify_all();
 	    }
 	}
+      else
+	std::cerr << "Merde !" << std::endl;
     }
 }

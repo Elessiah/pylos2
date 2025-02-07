@@ -9,4 +9,5 @@
 void			ef::NetworkCloner::addSplitTask(s_splitOrder		&order)
 {
   splitTasks.push(&order);
+  jobVar.notify_one();
 }

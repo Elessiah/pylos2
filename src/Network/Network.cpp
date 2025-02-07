@@ -28,6 +28,7 @@ ef::Network::Network(std::vector<int>		&build)
     }
   initGradient(false);
   nbLinks = getNbLinks();
+  cloner.addClones(*this, std::thread::hardware_concurrency());
 }
 
 ef::Network::Network(std::ifstream		&file)
@@ -38,6 +39,7 @@ ef::Network::Network(std::ifstream		&file)
   load(file);
   initGradient(false);
   nbLinks = getNbLinks();
+  cloner.addClones(*this, std::thread::hardware_concurrency());
 }
 
 ef::Network::Network(const Network		&other)

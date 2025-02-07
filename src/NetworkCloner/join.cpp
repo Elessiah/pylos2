@@ -10,4 +10,5 @@ void			ef::NetworkCloner::join(s_joinOrder	&order)
 {
   joinRemaining.store(clones.size());
   joinOrder = &order;
+  jobVar.notify_all();
 }

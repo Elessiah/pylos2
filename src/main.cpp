@@ -25,10 +25,10 @@ int				main(int		ac,
       else
 	filename = "output.bin";
       std::vector<int>		build = { 2, 1 };
-      ef::Network			network(build);
-      std::ofstream			saveFile(filename, std::ios::binary);
+      ef::Network		network(build);
+      std::ofstream		saveFile(filename, std::ios::binary);
 
-      network.learning(0.1, EXAM_XOR);
+      network.learning(0, EXAM_AND);
       network.save(saveFile);
       saveFile.close();
     }
@@ -40,17 +40,18 @@ int				main(int		ac,
 	filename = av[1];
       else
 	{
-	  std::cerr << "Wrong format :\n\t- To create new set : ./main new [optional filename output]\n\t- To load set : ./main [filename output]" << std::endl;
+	  std::cerr << "Wrong format :\n\t- To create new set : ./network new [optional filename output]\n\t- To load set : ./network [filename output]" << std::endl;
 	  return (-1);
 	}
       std::ifstream		loadFile(filename, std::ios::binary);
       ef::Network		network(loadFile);
-      std::vector<ef:: s_learnSubjects>	subjects = ef::getExam(EXAM_XOR);
+      std::vector<ef:: s_learnSubjects>	subjects = ef::getExam(EXAM_AND);
       std::vector<double>	result;
       size_t			i;
       size_t			iVector;
-      
+
       loadFile.close();
+      std::cout << "Score of this network : " << network.examen(subjects) << std::endl;
       for (i = 0; i < subjects.size(); i += 1)
 	{
 	  std::cout << "Injecting inputs : ";

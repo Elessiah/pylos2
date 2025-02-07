@@ -47,10 +47,10 @@ std::vector<ef::s_learnSubjects>	ef::getExam(int	idExam)
   else if (idExam == EXAM_AND)
     {
       std::vector<ef::s_learnSubjects>	exam = {
-	{ {1, 1}, {1} }//,
-	// { {1, 0}, {0} },
-	// { {0, 1}, {0} },
-	// { {0, 0}, {0} }
+	{ {1, 1}, {1} },
+	{ {1, 0}, {0} },
+	{ {0, 1}, {0} },
+	{ {0, 0}, {0} }
       };
       return (exam);
     }

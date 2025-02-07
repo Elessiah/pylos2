@@ -13,7 +13,7 @@ double			ef::Network::examen(const std::vector<s_learnSubjects>		&subjects)
   double		globalResult;
   size_t		nSubject;
   size_t		nOutput;
-  size_t		lambda;
+  double		lambda;
 
   globalResult = 0;
   for (nSubject = 0; nSubject < subjects.size(); nSubject += 1)

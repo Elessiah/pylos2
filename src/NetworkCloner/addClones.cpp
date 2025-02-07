@@ -11,6 +11,6 @@ void			ef::NetworkCloner::addClones(ef::Network	&network,
 {
   size_t		nClone;
 
-  for (nClone = 0; nClone < nbClones; nbClones += 1)
+  for (nClone = 0; nClone < nbClones; nClone += 1)
     addClone(network);
 }
