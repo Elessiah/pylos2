@@ -8,7 +8,8 @@
 #include		<ctime>
 
 ef::Network::Network(std::vector<int>		&build)
-  : networkError(0)
+  : modCoef({2, 1.5, 1.1, 1.001, 1, 0.999, 0.9, 0.5, 0.1, 0.001, 0})
+  , networkError(0)
 {
   size_t		i;
   int			nNeuron;
@@ -20,9 +21,9 @@ ef::Network::Network(std::vector<int>		&build)
       for (nNeuron = 0; nNeuron < build[i]; nNeuron += 1)
 	{
 	  if (i == 0)
-	    neurons[i].emplace_back(std::make_shared<Neuron>(threadPool));
+	    neurons[i].emplace_back(std::make_shared<Neuron>());
 	  else
-	    neurons[i].emplace_back(std::make_shared<Neuron>(neurons[i - 1], threadPool));
+	    neurons[i].emplace_back(std::make_shared<Neuron>(neurons[i - 1]));
 	}
     }
   initGradient(false);
@@ -30,7 +31,8 @@ ef::Network::Network(std::vector<int>		&build)
 }
 
 ef::Network::Network(std::ifstream		&file)
-  : networkError(0)
+  : modCoef({2, 1.5, 1.1, 1.001, 1, 0.999, 0.9, 0.5, 0.1, 0.001, 0})
+  , networkError(0)
 {
   srand(static_cast<unsigned>(std::time(0)));
   load(file);
@@ -39,12 +41,12 @@ ef::Network::Network(std::ifstream		&file)
 }
 
 ef::Network::Network(const Network		&other)
-  : neurons(other.neurons)
-  , nbLinks(other.nbLinks)
+  : modCoef({2, 1.5, 1.1, 1.001, 1, 0.999, 0.9, 0.5, 0.1, 0.001, 0})
   , networkError(0)
 {
-  initGradient(false);
   srand(static_cast<unsigned>(std::time(0)));
+  *this = other;
+  initGradient(false);
 }
 
 ef::Network		&ef::Network::operator=(const Network	&other)
@@ -62,9 +64,9 @@ ef::Network		&ef::Network::operator=(const Network	&other)
       for (nNeuron = 0; nNeuron < other.neurons[nLayer].size(); nNeuron += 1)
 	{
 	  if (nLayer == 0)
-	    neurons[nLayer].emplace_back(std::make_shared<Neuron>(other.neurons[nLayer][nNeuron], emptyLayer, threadPool));
+	    neurons[nLayer].emplace_back(std::make_shared<Neuron>(other.neurons[nLayer][nNeuron], emptyLayer));
 	  else
-	    neurons[nLayer].emplace_back(std::make_shared<Neuron>(other.neurons[nLayer][nNeuron], neurons[nLayer - 1], threadPool));
+	    neurons[nLayer].emplace_back(std::make_shared<Neuron>(other.neurons[nLayer][nNeuron], neurons[nLayer - 1]));
 	}
     }
   initGradient(false);
@@ -98,5 +100,4 @@ bool			ef::Network::operator!=(const Network	&other) const
 
 ef::Network::~Network()
 {
-
 }

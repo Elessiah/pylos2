@@ -17,7 +17,7 @@ double			ef::Network::primaryLearning(std::vector<s_learnSubjects>	&subjects)
   size_t		passedLinks;
 
   currentScore = examen(subjects);
-  //std::cout << "Starting Score is : " << currentScore << std::endl;
+  //  std::cout << "Starting Score is : " << currentScore << std::endl;
   passedLinks = 0;
   for (nLayer = 1; nLayer < neurons.size(); nLayer += 1)
     {
@@ -32,6 +32,6 @@ double			ef::Network::primaryLearning(std::vector<s_learnSubjects>	&subjects)
 	  //    << passedLinks << " / " << nbLinks << ")" << std::endl;
 	}
     }
-  std::cout << "Final Score : " << currentScore << std::endl;
+  std::cout << "Final Score : " << currentScore << "\t\t\r" << std::flush;
   return (currentScore);
 }

@@ -10,7 +10,7 @@ size_t			ef::Network::chooseLayerToAdd()
 {
   size_t		nLayer;
 
-  for (nLayer = neurons.size() - 2; nLayer > INPUT_LAYER; nLayer += 1)
+  for (nLayer = neurons.size() - 2; nLayer > INPUT_LAYER; nLayer -= 1)
     {
       if (!isLayerFullSize(nLayer))
 	return (nLayer);

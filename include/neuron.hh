@@ -26,16 +26,13 @@ namespace			ef
   class				Neuron
   {
   public:
-    Neuron(ef::ThreadPool				&_threadPool);
-    Neuron(std::vector<std::shared_ptr<Neuron>>		&neuronInputs,
-	   ef::ThreadPool				&_threadPool);
+    Neuron();
+    Neuron(std::vector<std::shared_ptr<Neuron>>		&neuronInputs);
     Neuron(std::ifstream				&file,
-	   std::vector<std::shared_ptr<Neuron>>		&neuronInputs,
-	   ef::ThreadPool				&_threadPool);
+	   std::vector<std::shared_ptr<Neuron>>		&neuronInputs);
     Neuron(const std::shared_ptr<Neuron>		&other);
     Neuron(const std::shared_ptr<Neuron>		&other,
-	   std::vector<std::shared_ptr<Neuron>>		&prevLayer,
-	   ef::ThreadPool				&_threadPool);
+	   std::vector<std::shared_ptr<Neuron>>		&prevLayer);
     ~Neuron();
 
     Neuron			&operator=(const Neuron					&other);
@@ -61,6 +58,7 @@ namespace			ef
     void			applyGradient(std::vector<double>			&gradient,
 					      double					speed);
     void			compute();
+    std::vector<double>		getLinksCoef();
     
   private:
     bool			isReady;
@@ -70,7 +68,6 @@ namespace			ef
     std::vector<s_input>	inputs;
     double			lastCoef;
     size_t			lastEditInput;
-    ef::ThreadPool		&threadPool;
     std::mutex			mutex;
 
     bool			writeHeader(std::ofstream				&file) const;

@@ -7,7 +7,7 @@ SRCDIR = ./src
 INCDIR = ./include
 TESTDIR = ./test
 OBJDIR = ./obj
-TARGET = main
+TARGET = network
 
 # Couleurs
 GREEN = \033[32m
@@ -28,7 +28,7 @@ TEST_SRCS = $(shell find $(TESTDIR) -name '*.cpp')
 TEST_OBJS = $(patsubst $(TESTDIR)/%.cpp, $(OBJDIR)/%.o, $(TEST_SRCS))
 
 # Règle principale
-all: $(TARGET) test run
+all: $(TARGET)
 
 # Compilation du programme principal
 $(TARGET): $(OBJS) $(OBJDIR)/main.o
@@ -42,17 +42,11 @@ $(OBJDIR)/%.o: $(SRCDIR)/%.cpp
 	@echo "$(YELLOW)[COMPILE]$(RESET) Compiling $<..."
 	@$(CXX) $(CXXFLAGS) -c -o $@ $<
 
-# Règle pour exécuter le programme
-run:
-	@echo "$(CYAN)[RUN]$(RESET) Running $(TARGET)..."
-	@./$(TARGET)
-
-# Compilation et exécution des tests unitaires
-test: $(TEST_OBJS)
-	@echo "$(CYAN)[TEST]$(RESET) Compiling and running tests..."
+# Compilation des tests unitaires
+test: $(TEST_OBJS) $(OBJS)
+	@echo "$(CYAN)[TEST]$(RESET) Compiling tests..."
 	@$(CXX) $(CXXFLAGS) -o test_runner $(OBJS) $(TEST_OBJS) $(LDFLAGS)
-	@./test_runner || echo "$(RED)[FAILURE]$(RESET) One or more tests failed."
-	@echo "$(GREEN)[SUCCESS]$(RESET) All tests passed."
+	@echo "$(GREEN)[DONE]$(RESET) Test runner built successfully."
 
 # Compilation des fichiers objets des tests
 $(OBJDIR)/%.o: $(TESTDIR)/%.cpp
@@ -60,20 +54,30 @@ $(OBJDIR)/%.o: $(TESTDIR)/%.cpp
 	@echo "$(YELLOW)[COMPILE TEST]$(RESET) Compiling test $<..."
 	@$(CXX) $(CXXFLAGS) -c -o $@ $<
 
+# Règle pour exécuter les tests
+run_tests: test
+	@echo "$(CYAN)[TEST]$(RESET) Running tests..."
+	@./test_runner || echo "$(RED)[FAILURE]$(RESET) One or more tests failed."
+	@echo "$(GREEN)[SUCCESS]$(RESET) All tests passed."
+
 # Règle pour générer le rapport de couverture
-coverage: test
+coverage: run_tests
 	@echo "$(CYAN)[COVERAGE]$(RESET) Generating coverage report..."
 	@gcov $(SRCS) $(TEST_SRCS)
 
 # Nettoyage des fichiers temporaires
-fclean:
+clean:
 	@echo "$(CYAN)[CLEAN]$(RESET) Cleaning build artifacts..."
-	@rm -rf $(OBJDIR) *.gcda *.gcno *.gcov $(TARGET) test_runner
+	@rm -rf $(OBJDIR) *.gcda *.gcno *.gcov test_runner
 	@find . -name "*~" -type f -delete
+
+# Nettoyage complet, y compris le binaire cible
+fclean: clean
+	@echo "$(CYAN)[FCLEAN]$(RESET) Removing $(TARGET)..."
+	@rm -f $(TARGET)
 
 # Nettoyage et recompilation complète
 re: fclean all
 
 # Règles de base
-.PHONY: all run test fclean re coverage
-
+.PHONY: all test run_tests coverage clean fclean re

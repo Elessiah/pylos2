@@ -9,10 +9,18 @@
 
 #include	<iostream>
 
-double		ef::Network::learning(double		targetScore,
-				      int		idExam)
+double		ef::Network::learning(double				targetScore,
+				      int				idExam)
 {
+  
   std::vector<ef::s_learnSubjects>	exam = ef::getExam(idExam);
+
+  return (learning(targetScore, exam));
+}
+
+double		ef::Network::learning(double				targetScore,
+				      std::vector<ef::s_learnSubjects>	&exam)
+{
   double	lastScore;
   double	currentScore;
   int		nbPassage;
@@ -22,9 +30,9 @@ double		ef::Network::learning(double		targetScore,
   nbPassage = 1;
   reachEnd = false;
   currentScore = primaryLearning(exam);
+  lastScore = currentScore;
   while (ef::dbAbs(currentScore) > targetScore && reachEnd == false)
     {
-      lastScore = currentScore;
       currentScore = primaryLearning(exam);
       nbPassage += 1;
       if (lastScore == currentScore)
@@ -37,7 +45,11 @@ double		ef::Network::learning(double		targetScore,
 	    }
 	  else
 	    reachEnd = true;
+	  lastScore = 0;
 	}
+      else
+	lastScore = currentScore;
+      
     }
   std::cout << "Nombre d'entraînements : " << nbPassage << std::endl;
   if (reachEnd)

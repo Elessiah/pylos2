@@ -25,6 +25,7 @@ namespace			ef
 {
   class				Neuron;
   class				Network;
+
   class				ThreadPool {
   public:
     ThreadPool();
@@ -36,7 +37,6 @@ namespace			ef
 
     void			addToQueue(std::function<void()>);
     void			waitAll();
-    void			setTasksTarget(int	nbTasksTarget);
     
   private:
     std::atomic<int>			tasksRemaining;

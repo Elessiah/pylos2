@@ -12,7 +12,8 @@ ef::ThreadPool::ThreadPool()
 }
 
 ef::ThreadPool::ThreadPool(int		nbThreads)
-  : stop(false)
+  : tasksRemaining(0)
+  , stop(false)
 {
   int		i;
 

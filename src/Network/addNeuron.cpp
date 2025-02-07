@@ -21,7 +21,7 @@ size_t				ef::Network::addNeuron(size_t		nLayer)
   size_t			nNeuron;
   std::shared_ptr<Neuron>	newNeuron;
 
-  newNeuron = neurons[nLayer].emplace_back(std::make_shared<Neuron>(neurons[nLayer - 1], threadPool));
+  newNeuron = neurons[nLayer].emplace_back(std::make_shared<Neuron>(neurons[nLayer - 1]));
   nLayer += 1;
   for (nNeuron = 0; nNeuron < neurons[nLayer].size(); nNeuron += 1)
     neurons[nLayer][nNeuron]->linkNewNeuron(newNeuron);

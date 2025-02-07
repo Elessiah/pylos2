@@ -11,26 +11,33 @@ void			ef::Network::testNewCoef(Network			network,
 						 int				nNeuron,
 						 int				nLink,
 						 double				modCoef,
-						 const std::vector<s_learnSubjects>	&subjects,
+						 std::vector<s_learnSubjects>	&subjects,
 						 double				&newScore,
 						 char				&isReverse)
 {
-  double		testScore;
-  std::shared_ptr<Neuron>	neuron  = network.neurons[nLayer][nNeuron];
+  s_testCoef		testCoef = {nLayer, nNeuron, nLink, modCoef, &subjects, newScore, isReverse};
 
-  if (modCoef != 1)
+  testNewCoef(network, testCoef);
+  newScore = testCoef.newScore;
+  isReverse = testCoef.isReverse;
+}
+
+void			ef::Network::testNewCoef(Network			&network,
+						 s_testCoef			&testCoef)
+{
+  double		testScore;
+  std::shared_ptr<Neuron>	neuron  = network.neurons[testCoef.nLayer][testCoef.nNeuron];
+
+  if (testCoef.modCoef != 1)
     {
-      neuron->tryNewCoef(nLink, modCoef);
-      newScore = network.examen(subjects);
+      neuron->tryNewCoef(testCoef.nLink, testCoef.modCoef);
+      testCoef.newScore = network.examen(*testCoef.subjects);
     }
   neuron->switchReverse();
-  testScore = network.examen(subjects);
-  if (testScore < newScore)
+  testScore = network.examen(*testCoef.subjects);
+  if (testScore < testCoef.newScore || testCoef.modCoef == 1)
     {
-      newScore = testScore;
-      isReverse = 1;
+      testCoef.newScore = testScore;
+      testCoef.isReverse = 1;
     }
-  if (modCoef != 1)
-    neuron->back();
-  neuron->switchReverse();
 }

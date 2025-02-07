@@ -1,0 +1,64 @@
+// ************************************************
+// 06/02/2025 15:31:09
+// Keryan HOUSSIN 
+// Pylos2
+// ************************************************
+
+#ifndef			__EF_ORDER_HH__
+
+#define			__EF_ORDER_HH__
+
+#include		"learnSubjects.hh"
+
+namespace		ef
+{
+   enum				e_orderType
+    {
+      TEST_COEF = 0,
+      TRAIN_SUBJECT,
+      SYNC_LINK,
+      SEND_NETWORK
+    };
+
+  struct			s_testCoef
+  {
+    int				nLayer;
+    int				nNeuron;
+    int				nLink;
+    double			modCoef;
+    std::vector<s_learnSubjects>	*subjects;
+    double			newScore;
+    char			isReverse;
+  };
+
+  struct			s_splitOrder
+  {
+    e_orderType			type;
+    union
+    {
+      s_testCoef		testCoef;
+      s_learnSubjects		*subject;
+    };
+  };
+
+  struct			s_syncLink
+  {
+    int				nLayer;
+    int				nNeuron;
+    int				nLink;
+    double			modCoef;
+    bool			reverse;
+  };
+
+  struct			s_joinOrder
+  {
+    e_orderType			type;
+    union
+    {
+      s_syncLink		syncLink;
+      std::vector<std::vector<std::vector<double>>>	*neuronsCoef;
+    };
+  };
+}
+
+#endif	//		__EF_ORDER_HH__

@@ -9,21 +9,18 @@
 
 #include	"neuron.hh"
 
-ef::Neuron::Neuron(ef::ThreadPool					&_threadPool)
+ef::Neuron::Neuron()
   : isReady(false)
   , isReverse(rand() % 2)
   , outputValue(0)
   , inputValue(0)
-  , threadPool(_threadPool)
 {
 }
 
-ef::Neuron::Neuron(std::vector<std::shared_ptr<Neuron>>			&neuronInputs,
-		   ef::ThreadPool					&_threadPool)
+ef::Neuron::Neuron(std::vector<std::shared_ptr<Neuron>>			&neuronInputs)
   : isReady(false)
   , isReverse(rand() % 2)
-  , outputValue(0)    
-  , threadPool(_threadPool)
+  , outputValue(0)
 {
   s_input	input;
   size_t	i;
@@ -37,10 +34,8 @@ ef::Neuron::Neuron(std::vector<std::shared_ptr<Neuron>>			&neuronInputs,
 }
 
 ef::Neuron::Neuron(std::ifstream					&file,
-		   std::vector<std::shared_ptr<Neuron>>			&neuronInputs,
-		   ef::ThreadPool					&_threadPool)
+		   std::vector<std::shared_ptr<Neuron>>			&neuronInputs)
   : isReady(false)
-  , threadPool(_threadPool)
 {
   load(file, neuronInputs);
 }
@@ -51,18 +46,15 @@ ef::Neuron::Neuron(const std::shared_ptr<Neuron>			&other)
   , outputValue(0)
   , inputValue(other->inputValue)
   , inputs(other->inputs)
-  , threadPool(other->threadPool)
 {
 }
 
 ef::Neuron::Neuron(const std::shared_ptr<Neuron>			&other,
-		   std::vector<std::shared_ptr<Neuron>>			&prevLayer,
-		   ef::ThreadPool					&_threadPool)
+		   std::vector<std::shared_ptr<Neuron>>			&prevLayer)
   : isReady(false)
   , isReverse(other->isReverse)
   , outputValue(0)
   , inputValue(other->inputValue)
-  , threadPool(_threadPool)
 {
   if (prevLayer.size() != other->inputs.size())
     throw std::runtime_error("Neuron inputs size different from other inputs size");
