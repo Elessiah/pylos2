@@ -28,5 +28,13 @@ bool					ef::Network::verify()
 	    }
 	}
     }
-  return (true);
+  if (cloner.getNbClone() > 0)
+    {
+      s_joinOrder	order = {COMPARE_NETWORK, .compareNetwork = {this, false}};
+      cloner.join(order);
+      cloner.waitJoin();
+      return (order.compareNetwork.isEqual);
+    }
+  else
+    return (true);
 }

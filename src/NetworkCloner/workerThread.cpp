@@ -40,6 +40,6 @@ void					ef::NetworkCloner::workerThread(ef::Network	network)
 	    }
 	}
       else
-	std::cerr << "Merde !" << std::endl;
+	std::cerr << "No order after wake up !" << std::endl;
     }
 }

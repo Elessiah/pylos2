@@ -44,13 +44,17 @@ namespace				ef
 						 int					idExam);
     double				learning(double					targetScore,
 						 std::vector<s_learnSubjects>		&subjects);
-    size_t				addNeuron();
-    size_t				addNeuron(size_t				nLayer);
-    size_t				addNeurons(size_t				nbNeurons);
+    size_t				addNeuron(bool					sync = true);
+    size_t				addNeuron(size_t				nLayer,
+						  bool					sync = true);
     size_t				addNeurons(size_t				nbNeurons,
-						   size_t				nLayer);
-    size_t				addLayer();
-    size_t				addLayers(size_t				nbLayers);
+						   bool					sync = true);
+    size_t				addNeurons(size_t				nbNeurons,
+						   size_t				nLayer,
+						   bool					sync = true);
+    size_t				addLayer(bool					sync = true);
+    size_t				addLayers(size_t				nbLayers,
+						  bool					sync = true);
     void				calculGradient(std::vector<s_learnSubjects>	&subjects);
     void				textDisplay();
     bool				isFullSize();
@@ -61,6 +65,7 @@ namespace				ef
 						int					nLink,
 						double					modCoef,
 						bool					isReverse);
+    std::vector<std::vector<std::vector<double>>>	get();
 
   private:
     std::vector<std::vector<std::shared_ptr<Neuron>>>	neurons;
@@ -98,6 +103,7 @@ namespace				ef
 						       size_t				compteur);
     void				calculRetropropagation(std::vector<s_learnSubjects>	&subjects);
     void				applyRetropropagation(double			speed);
+    void				syncCloneNetworks();
   };
 }
 

@@ -10,7 +10,5 @@ void			ef::NetworkCloner::waitAll()
 {
   std::unique_lock<std::mutex>	lock(jobMutex);
 
-  if (clones.size() == 0)
-    throw std::runtime_error("No clone defined, deadlock !");
-  main.wait(lock, [this] { return joinOrder && splitTasks.empty() && splitRemaining.load() == 0; });
+  main.wait(lock, [this] { return clones.size() == 0 || (joinOrder && splitTasks.empty() && splitRemaining.load() == 0); });
 }

@@ -16,17 +16,10 @@ void			ef::NetworkCloner::manageJoinTask(ef::Network	&network,
       if (order->syncLink.reverse)
 	network.neurons[order->syncLink.nLayer][order->syncLink.nNeuron]->switchReverse();
     }
+  else if (order->type == SYNC_NETWORK)
+    syncNetwork(network, order);
   else if (order->type == SEND_NETWORK)
-    {
-      size_t		nLayer;
-      size_t		nNeuron;
-
-      order->neuronsCoef->clear();
-      for (nLayer = 0; nLayer < network.neurons.size(); nLayer += 1)
-	{
-	  order->neuronsCoef->emplace_back();
-	  for (nNeuron = 0; nNeuron < network.neurons[nLayer].size(); nNeuron += 1)
-	    order->neuronsCoef[nLayer][nNeuron].emplace_back(network.neurons[nLayer][nNeuron]->getLinksCoef());
-	}
-    }
+    order->neurons = &network.neurons;
+  else if (order->type == COMPARE_NETWORK)
+    order->compareNetwork.isEqual = *(order->compareNetwork.network) == network;
 }

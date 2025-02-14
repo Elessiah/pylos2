@@ -28,7 +28,7 @@ TEST_SRCS = $(shell find $(TESTDIR) -name '*.cpp')
 TEST_OBJS = $(patsubst $(TESTDIR)/%.cpp, $(OBJDIR)/%.o, $(TEST_SRCS))
 
 # Règle principale
-all: $(TARGET)
+all: $(TARGET) run_tests
 
 # Compilation du programme principal
 $(TARGET): $(OBJS) $(OBJDIR)/main.o
@@ -58,7 +58,6 @@ $(OBJDIR)/%.o: $(TESTDIR)/%.cpp
 run_tests: test
 	@echo "$(CYAN)[TEST]$(RESET) Running tests..."
 	@./test_runner || echo "$(RED)[FAILURE]$(RESET) One or more tests failed."
-	@echo "$(GREEN)[SUCCESS]$(RESET) All tests passed."
 
 # Règle pour générer le rapport de couverture
 coverage: run_tests

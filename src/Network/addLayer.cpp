@@ -6,13 +6,17 @@
 
 #include		"network.hh"
 
-size_t			ef::Network::addLayer()
+size_t			ef::Network::addLayer(bool		sync)
 {
   size_t		indexNewLayer;
+  size_t		nbNewNeurons;
 
   indexNewLayer = neurons.size() - 1;
   neurons.push_back(neurons[indexNewLayer]);
   neurons[indexNewLayer].clear();
   unlinkLayer(neurons.size() - 1);
-  return (addNeurons(neurons[neurons.size() - 1].size() + 2, indexNewLayer));
+  nbNewNeurons = addNeurons(neurons[neurons.size() - 1].size() + 2, indexNewLayer, false);
+  if (sync)
+    syncCloneNetworks();
+  return (nbNewNeurons);
 }

@@ -54,6 +54,8 @@ namespace			ef
 						s_splitOrder    *order);
     void			manageJoinTask(ef::Network	&network,
 					       s_joinOrder	*order);
+    void			syncNetwork(ef::Network		&network,
+					    s_joinOrder		*order);
   };
 }
 

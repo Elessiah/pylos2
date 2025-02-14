@@ -10,6 +10,8 @@
 
 #include		"learnSubjects.hh"
 
+#include		<memory>
+
 namespace		ef
 {
    enum				e_orderType
@@ -17,7 +19,9 @@ namespace		ef
       TEST_COEF = 0,
       TRAIN_SUBJECT,
       SYNC_LINK,
-      SEND_NETWORK
+      SYNC_NETWORK, // Ne synchronise pas les liens !!
+      SEND_NETWORK,
+      COMPARE_NETWORK
     };
 
   struct			s_testCoef
@@ -50,13 +54,23 @@ namespace		ef
     bool			reverse;
   };
 
+  class				Network;
+  class				Neuron;
+
+  struct			s_compareNetwork
+  {
+    ef::Network			*network;
+    bool			isEqual;
+  };
+
   struct			s_joinOrder
   {
     e_orderType			type;
     union
     {
       s_syncLink		syncLink;
-      std::vector<std::vector<std::vector<double>>>	*neuronsCoef;
+      std::vector<std::vector<std::shared_ptr<Neuron>>>	*neurons;
+      s_compareNetwork		compareNetwork;
     };
   };
 }

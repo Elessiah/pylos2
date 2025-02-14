@@ -1,5 +1,5 @@
 // ************************************************
-// 10/01/2025 10:04:20
+// 12/02/2025 16:13:37
 // Keryan HOUSSIN 
 // Pylos2
 // ************************************************
@@ -17,6 +17,7 @@
 namespace			ef
 {
   class Neuron;
+  class NetworkCloner;
   struct			s_input
   {
     std::shared_ptr<Neuron>	neuron;
@@ -34,6 +35,8 @@ namespace			ef
     Neuron(const std::shared_ptr<Neuron>		&other,
 	   std::vector<std::shared_ptr<Neuron>>		&prevLayer);
     ~Neuron();
+
+    friend class		NetworkCloner;
 
     Neuron			&operator=(const Neuron					&other);
     bool			operator==(const Neuron					&other) const;
@@ -59,6 +62,8 @@ namespace			ef
 					      double					speed);
     void			compute();
     std::vector<double>		getLinksCoef();
+    void			syncWithNetwork(std::shared_ptr<Neuron>			&neuron,
+						std::vector<std::shared_ptr<Neuron>>	&prevLayer);
     
   private:
     bool			isReady;

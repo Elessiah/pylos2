@@ -12,10 +12,12 @@ TEST(TEST_NETWORK, Test_Add_Neurons)
 {
   std::vector<int>		build = {4, 8, 8, 3, 4};
   ef::Network			Network(build);
+  size_t			nLayer = 1;
 
+  EXPECT_EQ(Network.verify(), true);
   Network.addNeuron();
   EXPECT_EQ(Network.verify(), true);
-  Network.addNeuron(1);
+  Network.addNeuron(nLayer);
   EXPECT_EQ(Network.verify(), true);
   Network.addLayer();
   EXPECT_EQ(Network.verify(), true);
@@ -86,7 +88,7 @@ TEST(TEST_NETWORK, EXAM_REGULARITY)
     EXPECT_EQ(score, Network.examen(subjects));
 }
 
-TEST(TEST_NETWORK, CLONE_EQUALITY)
+TEST(TEST_NETWORK, DUPLICATION_EQUALITY)
 {
   std::vector<int>		build = { 2, 8, 8, 8, 1 };
   ef::Network			network1(build);

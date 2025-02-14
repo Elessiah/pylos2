@@ -29,6 +29,7 @@ ef::Network::Network(std::vector<int>		&build)
   initGradient(false);
   nbLinks = getNbLinks();
   cloner.addClones(*this, std::thread::hardware_concurrency());
+  //  cloner.addClones(*this, 1);
 }
 
 ef::Network::Network(std::ifstream		&file)
@@ -40,6 +41,7 @@ ef::Network::Network(std::ifstream		&file)
   initGradient(false);
   nbLinks = getNbLinks();
   cloner.addClones(*this, std::thread::hardware_concurrency());
+  //cloner.addClones(*this, 1);
 }
 
 ef::Network::Network(const Network		&other)
@@ -71,6 +73,9 @@ ef::Network		&ef::Network::operator=(const Network	&other)
 	    neurons[nLayer].emplace_back(std::make_shared<Neuron>(other.neurons[nLayer][nNeuron], neurons[nLayer - 1]));
 	}
     }
+  if (other != *this)
+    std::cout << "Erreur dans opérateur = " << std::endl;
+  syncCloneNetworks();
   initGradient(false);
   return (*this);
 }
@@ -88,7 +93,7 @@ bool			ef::Network::operator==(const Network	&other) const
 	return (false);
       for (nNeuron = 0; nNeuron < neurons[nLayer].size(); nNeuron += 1)
 	{
-	  if (*neurons[nLayer][nNeuron] != *other.neurons[nLayer][nNeuron])
+	  if (*(neurons[nLayer][nNeuron]) != *(other.neurons[nLayer][nNeuron]))
 	    return (false);
 	}
     }

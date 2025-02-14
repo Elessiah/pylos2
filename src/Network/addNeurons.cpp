@@ -7,18 +7,24 @@
 #include		"network.hh"
 
 size_t			ef::Network::addNeurons(size_t		nbNeurons,
-						size_t		nLayer)
+						size_t		nLayer,
+						bool		sync)
 {
   size_t		nbNewNeurons;
 
-  for (nbNewNeurons = 0; nbNewNeurons < nbNeurons; nbNewNeurons += addNeuron(nLayer));
+  for (nbNewNeurons = 0; nbNewNeurons < nbNeurons; nbNewNeurons += addNeuron(nLayer, false));
+  if (sync)
+    syncCloneNetworks();
   return (nbNewNeurons);
 }
 
-size_t			ef::Network::addNeurons(size_t		nbNeurons)
+size_t			ef::Network::addNeurons(size_t		nbNeurons,
+						bool		sync)
 {
   size_t		nbNewNeurons;
   
-  for (nbNewNeurons = 0; nbNewNeurons < nbNeurons; nbNewNeurons += addNeuron());
+  for (nbNewNeurons = 0; nbNewNeurons < nbNeurons; nbNewNeurons += addNeuron(false));
+  if (sync)
+    syncCloneNetworks();
   return (nbNewNeurons);
 }
