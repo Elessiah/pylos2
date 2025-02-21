@@ -43,13 +43,15 @@ namespace			ef
     std::atomic<int>		joinRemaining;
     std::vector<std::thread>    clones;
     std::queue<s_splitOrder*>	splitTasks;
-    s_joinOrder			*joinOrder;
+    std::atomic<s_joinOrder*>	joinOrder;
+    bool			repeatBeacon;
     std::mutex		        jobMutex;
     std::condition_variable	jobVar;
     std::condition_variable	main;
     bool			stop;
 
-    void			workerThread(ef::Network	network);
+    void			workerThread(ef::Network	network,
+					     int		id);
     void			manageSplitTask(ef::Network	&network,
 						s_splitOrder    *order);
     void			manageJoinTask(ef::Network	&network,

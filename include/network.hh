@@ -15,6 +15,7 @@
 # include				<cstddef>
 
 # define	INPUT_LAYER		0
+# define	MAX_SIZE_LAYER		neurons.size() * 3
 
 namespace				ef
 {

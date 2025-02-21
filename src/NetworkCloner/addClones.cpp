@@ -12,5 +12,8 @@ void			ef::NetworkCloner::addClones(ef::Network	&network,
   size_t		nClone;
 
   for (nClone = 0; nClone < nbClones; nClone += 1)
-    addClone(network);
+    {
+      addClone(network);
+      std::this_thread::sleep_for(std::chrono::milliseconds(1));
+    }
 }

@@ -9,5 +9,5 @@
 
 void			ef::NetworkCloner::addClone(ef::Network	&network)
 {
-  clones.emplace_back([this, network] { workerThread(network); });
+  clones.emplace_back([this, network] { workerThread(network, getNbClone()); });
 }

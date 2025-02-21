@@ -20,24 +20,57 @@ int				main(int		ac,
   if (ac == 1 || strcmp(av[1], "new") == 0)
     {
       std::string		filename;
-      if (ac > 2)
-	filename = av[2];
+      int			examName;
+      if (ac > 3)
+	{
+	  filename = av[2];
+	  if (!strcmp(av[3], "xor"))
+	    examName = EXAM_XOR;
+	  else if (!strcmp(av[3], "morpion"))
+	    examName = EXAM_MORPION;
+	  else if (!strcmp(av[3], "or"))
+	    examName = EXAM_OR;
+	  else if (!strcmp(av[3], "and"))
+	    examName = EXAM_AND;
+	  else
+	    {
+	      std::cerr << "Unknown exam, please try again or look learnSubjects.hh" << std::endl;
+	      return (-1);
+	    }
+	}
       else
 	filename = "output.bin";
-      std::vector<int>		build = { 2, 1 };
+      std::vector<ef::s_learnSubjects>	subjects = ef::getExam(examName);
+      std::vector<int>		build = { (int)subjects[0].inputValues.size(), (int)subjects[0].expectedResults.size() };
       ef::Network		network(build);
       std::ofstream		saveFile(filename, std::ios::binary);
 
-      network.learning(0, EXAM_AND);
+      network.learning(0.33, examName);
       network.save(saveFile);
       saveFile.close();
     }
   else
     {
       std::string		filename;
+      int			examName;
 
-      if (ac > 1)
-	filename = av[1];
+      if (ac > 2)
+	{
+	  filename = av[1];
+	  if (!strcmp(av[2], "xor"))
+	    examName = EXAM_XOR;
+	  else if (!strcmp(av[2], "morpion"))
+	    examName = EXAM_MORPION;
+	  else if (!strcmp(av[2], "or"))
+	    examName = EXAM_OR;
+	  else if (!strcmp(av[2], "and"))
+	    examName = EXAM_AND;
+	  else
+	    {
+	      std::cerr << "Unknown exam, please try again or look learnSubjects.hh" << std::endl;
+	      return (-1);
+	    }
+	}
       else
 	{
 	  std::cerr << "Wrong format :\n\t- To create new set : ./network new [optional filename output]\n\t- To load set : ./network [filename output]" << std::endl;
@@ -45,7 +78,7 @@ int				main(int		ac,
 	}
       std::ifstream		loadFile(filename, std::ios::binary);
       ef::Network		network(loadFile);
-      std::vector<ef:: s_learnSubjects>	subjects = ef::getExam(EXAM_AND);
+      std::vector<ef:: s_learnSubjects>	subjects = ef::getExam(examName);
       std::vector<double>	result;
       size_t			i;
       size_t			iVector;

@@ -7,15 +7,19 @@
 #include				"networkCloner.hh"
 #include				"network.hh"
 
-void					ef::NetworkCloner::workerThread(ef::Network	network)
+void					ef::NetworkCloner::workerThread(ef::Network	network,
+									int		id)
 {
+  s_splitOrder				*splitTask;
+  bool					beacon = repeatBeacon;
+
+  //  std::cout << "Clone " << id << " starting..." << std::endl;
   while (true)
     {
-      s_splitOrder			*splitTask;
       std::unique_lock<std::mutex>	lock(jobMutex);
 
-      jobVar.wait(lock, [this] { return stop || !splitTasks.empty() || joinOrder != nullptr; });
-      if (stop && splitTasks.empty() && joinOrder == nullptr)
+      jobVar.wait(lock, [this, beacon] { return (stop || !splitTasks.empty() || (joinOrder.load() != nullptr && beacon != repeatBeacon)); });
+      if (stop && splitTasks.empty() && joinOrder.load() == nullptr)
 	return;
       if (!splitTasks.empty())
 	{
@@ -25,17 +29,22 @@ void					ef::NetworkCloner::workerThread(ef::Network	network)
 	  lock.unlock();
 	  manageSplitTask(network, splitTask);
 	  splitRemaining.fetch_sub(1);
-	  if (splitRemaining.load() == 0)
+	  if (splitTasks.empty() && splitRemaining.load() == 0)
 	    main.notify_all();
 	}
-      else if (joinOrder != nullptr)
+      else if (joinOrder.load() != nullptr)
 	{
+	  beacon = !beacon;
 	  lock.unlock();
-	  manageJoinTask(network, joinOrder);
+	  manageJoinTask(network, joinOrder.load());
 	  joinRemaining.fetch_sub(1);
 	  if (joinRemaining.load() == 0)
 	    {
-	      joinOrder = nullptr;
+	    //	      std::this_thread::sleep_for(std::chrono::microseconds(5));
+	      {
+		std::lock_guard<std::mutex> lock(jobMutex);
+		joinOrder.store(nullptr, std::memory_order_release);
+	      }
 	      main.notify_all();
 	    }
 	}

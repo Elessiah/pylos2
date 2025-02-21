@@ -74,6 +74,35 @@ TEST(TEST_NETWORK, Test_Copy_Operator)
 
 }
 
+TEST(TEST_NETWORK, TRAINING_REGULARITY)
+{
+  std::vector<int>		build = {2, 8, 1};
+  ef::Network			Network(build);
+  std::string			filename = "TestFile.save";
+  std::ofstream			saveFile(filename, std::ios::binary);
+  double			baseScore;
+  std::vector<ef::s_learnSubjects>	subjects;
+
+  subjects = ef::getExam(EXAM_XOR);
+  EXPECT_EQ(Network, Network);
+  Network.save(saveFile);
+  saveFile.close();
+  Network.primaryLearning(subjects);
+  baseScore = Network.examen(subjects);
+
+  int				i;
+  for (i = 0; i < 10; i += 1)
+    {
+      std::ifstream		loadFile(filename, std::ios::binary);
+      ef::Network		loadNetwork(loadFile);
+
+      loadNetwork.primaryLearning(subjects);
+      EXPECT_EQ(loadNetwork.examen(subjects), baseScore);
+      loadFile.close();
+    }
+  std::remove(filename.c_str());
+}
+
 TEST(TEST_NETWORK, EXAM_REGULARITY)
 {
   std::vector<int>		build = {2, 8, 8, 8, 1};
@@ -90,8 +119,8 @@ TEST(TEST_NETWORK, EXAM_REGULARITY)
 
 TEST(TEST_NETWORK, DUPLICATION_EQUALITY)
 {
-  std::vector<int>		build = { 2, 8, 8, 8, 1 };
-  ef::Network			network1(build);
+  std::ifstream			file("blankNetwork.bin");
+  ef::Network			network1(file);
   ef::Network			network2(network1);
   std::vector<ef::s_learnSubjects>	subjects;
 

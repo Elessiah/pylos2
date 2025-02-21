@@ -8,8 +8,6 @@
 
 # define			__EF_NEURONS_HH__
 
-# include			"threadPool.hh"
-
 # include			<fstream>
 # include			<vector>
 # include			<memory>
@@ -73,7 +71,6 @@ namespace			ef
     std::vector<s_input>	inputs;
     double			lastCoef;
     size_t			lastEditInput;
-    std::mutex			mutex;
 
     bool			writeHeader(std::ofstream				&file) const;
     bool			writeNeuronContent(std::ofstream			&file) const;

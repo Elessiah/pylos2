@@ -9,9 +9,10 @@
 ef::NetworkCloner::NetworkCloner()
   : splitRemaining(0)
   , joinRemaining(0)
-  , joinOrder(nullptr)
+  , repeatBeacon(false)
   , stop(false)
 {
+  joinOrder.store(nullptr);
 }
 
 ef::NetworkCloner::~NetworkCloner()

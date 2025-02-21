@@ -16,8 +16,11 @@ void			ef::Neuron::compute()
   outputValue = 0;
   for (i = 0; i < inputs.size(); i += 1)
     outputValue += inputs[i].neuron->getOutput() * inputs[i].coef;
+  if (outputValue < (inputs.size() / 2))
+    outputValue = 0;
+  else
+    outputValue = 1;
   if (isReverse)
     outputValue *= -1;
-  outputValue = (1 / (1  + exp(outputValue)));
   isReady = true;
 }

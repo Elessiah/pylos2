@@ -8,7 +8,7 @@
 
 bool		ef::Network::isLayerFullSize(size_t		nLayer)
 {
-  if (neurons[nLayer].size() < (neurons.size() * 3))
+  if (neurons[nLayer].size() < (MAX_SIZE_LAYER))
     return (false);
   return (true);
 }

@@ -15,12 +15,17 @@ void			ef::Network::tryCoef(std::vector<s_learnSubjects>	&subjects,
   std::vector<s_splitOrder>	orders;
   size_t		nCoef;
 
+  orders.resize(modCoef.size());
   for (nCoef = 0; nCoef < modCoef.size(); nCoef += 1)
     {
-      orders.push_back({ TEST_COEF, .testCoef = {nLayer, nNeuron, nLink, modCoef[nCoef], &subjects, 0, 0}});
-      cloner.addSplitTask(orders[nCoef]);
+      orders[nCoef] = { TEST_COEF, .testCoef = {nLayer, nNeuron, nLink, modCoef[nCoef], &subjects, -1, 0}};
+      if (cloner.getNbClone() > 0)
+	cloner.addSplitTask(orders[nCoef]);
+      else
+	testNewCoef(*this, orders[nCoef].testCoef);
     }
-  cloner.waitSplit();
+  if (cloner.getNbClone() > 0)
+    cloner.waitSplit();
   int			bestCoef;
   double		bestScore;
   bool			isBestReverse;
@@ -30,7 +35,7 @@ void			ef::Network::tryCoef(std::vector<s_learnSubjects>	&subjects,
   isBestReverse = false;
   for (nCoef = 1; nCoef < modCoef.size(); nCoef += 1)
     {
-      if (bestScore > orders[nCoef].testCoef.newScore)
+      if (orders[nCoef].testCoef.newScore != -1 && bestScore > orders[nCoef].testCoef.newScore)
 	{
 	  bestCoef = nCoef;
 	  bestScore = orders[bestCoef].testCoef.newScore;

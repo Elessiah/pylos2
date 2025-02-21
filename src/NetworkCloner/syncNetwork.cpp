@@ -11,63 +11,40 @@ void			ef::NetworkCloner::syncNetwork(ef::Network	&network,
 {
   size_t		nLayer;
   size_t		nNeuron;
-  
+
+  // Assure que les deux réseaux ont le même nombres de couches
   for (; network.neurons.size() < (*order->neurons).size(); network.neurons.emplace_back());
   for (; network.neurons.size() > (*order->neurons).size(); network.neurons.pop_back());
   for (nLayer = 0; nLayer < (*order->neurons).size(); nLayer += 1)
     {
-      if (network.neurons[nLayer].size() != (*order->neurons)[nLayer].size())
-	{	  
-	  nNeuron = network.neurons[nLayer].size();
-	  network.addNeurons((*order->neurons)[nLayer].size() - nNeuron, nLayer);
+      // Assure que les deux réseaux ont le même nombres de neurones par couches
+      while (network.neurons[nLayer].size() < (*order->neurons)[nLayer].size())
+	{
 	  if (nLayer == 0)
 	    {
 	      std::vector<std::shared_ptr<Neuron>>	empty;
-
-	      for (nNeuron = 0; nNeuron < network.neurons[nLayer].size(); nNeuron += 1)
-		network.neurons[nLayer][nNeuron]->syncWithNetwork((*order->neurons)[nLayer][nNeuron], empty);
+	      
+	      network.neurons[nLayer].emplace_back(std::make_shared<Neuron>());
 	    }
 	  else
-	    {
-	      for (nNeuron = 0; nNeuron < network.neurons[nLayer].size(); nNeuron += 1)
-		network.neurons[nLayer][nNeuron]->syncWithNetwork((*order->neurons)[nLayer][nNeuron], network.neurons[nLayer - 1]);
-	    }
-	  if ((nLayer + 1) < network.neurons.size())
-	    {
-	      size_t	nextLayer;
-		  
-	      nextLayer = nLayer + 1;
-	      for (nNeuron = 0; nNeuron < network.neurons[nextLayer].size(); nNeuron += 1)
-		network.neurons[nextLayer][nNeuron]->syncWithNetwork((*order->neurons)[nextLayer][nNeuron], network.neurons[nLayer - 1]);
-	    }
+	    network.neurons[nLayer].emplace_back(std::make_shared<Neuron>(network.neurons[nLayer - 1]));
 	}
-      if (nLayer > 0)
-	{
-	  for (nNeuron = 0; nNeuron < network.neurons[nLayer].size(); nNeuron += 1)
-	    {
-	      if (*(network.neurons[nLayer][nNeuron]) != *((*order->neurons)[nLayer][nNeuron]))
-		network.neurons[nLayer][nNeuron]->syncWithNetwork((*order->neurons)[nLayer][nNeuron], network.neurons[nLayer - 1]);
-	      if (*(network.neurons[nLayer][nNeuron]) != *((*order->neurons)[nLayer][nNeuron]))
-		std::cout << "Ça marche pas !" << std::endl;
-	    }
-	}
-    }
-  // Debug !
-  size_t		nLink;
-
-  for (nLayer = 0; nLayer < network.neurons.size(); nLayer += 1)
-    {
-      if (network.neurons[nLayer].size() != (*order->neurons)[nLayer].size())
-	std::cout << "Tailles de couches " << nLayer << " différentes" << std::endl;
+      while (network.neurons[nLayer].size() > (*order->neurons)[nLayer].size())
+	network.neurons[nLayer].pop_back();
+      // Assure que les deux réseaux ont les mêmes liens par neurones
       for (nNeuron = 0; nNeuron < network.neurons[nLayer].size(); nNeuron += 1)
 	{
-	  if (network.neurons[nLayer][nNeuron]->inputs.size() != (*order->neurons)[nLayer][nNeuron]->inputs.size())
-	    std::cout << "Nombres d'inputs différents :\n\t-nLayer: " << nLayer << "\n\t- nNeuron: " << nNeuron << std::endl;
-	  for (nLink = 0; nLink < network.neurons[nLayer][nNeuron]->inputs.size(); nLink += 1)
+	  if (network.neurons[nLayer][nNeuron] != (*order->neurons)[nLayer][nNeuron])
 	    {
-	      if (network.neurons[nLayer][nNeuron]->inputs[nLink].coef != (*order->neurons)[nLayer][nNeuron]->inputs[nLink].coef)
-		std::cout << "Coefs différents !\n\t- nLayer: " << nLayer << "\n\t- nNeuron: " << nNeuron << "\n\t- nLink: " << nLink << std::endl;
-	    }
+	      if (nLayer == 0)
+		{
+		  std::vector<std::shared_ptr<Neuron>>	empty;
+		  
+		  network.neurons[nLayer][nNeuron]->syncWithNetwork((*order->neurons)[nLayer][nNeuron], empty);
+		}
+	      else
+		network.neurons[nLayer][nNeuron]->syncWithNetwork((*order->neurons)[nLayer][nNeuron], network.neurons[nLayer - 1]);
+	    }	    
 	}
     }
 }

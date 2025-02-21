@@ -30,6 +30,7 @@ bool					ef::Network::verify()
     }
   if (cloner.getNbClone() > 0)
     {
+      //      std::cout << "Verifying " << cloner.getNbClone() << " clones" << std::endl;
       s_joinOrder	order = {COMPARE_NETWORK, .compareNetwork = {this, false}};
       cloner.join(order);
       cloner.waitJoin();

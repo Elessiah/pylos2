@@ -31,6 +31,8 @@ size_t				ef::Network::addNeuron(size_t		nLayer,
   else
     newNeuron = neurons[nLayer].emplace_back(std::make_shared<Neuron>(neurons[nLayer - 1]));
   nLayer += 1;
+  if (nLayer == neurons.size())
+    std::cerr << "Erreur !! Ecriture hors vecteur !!" << std::endl;
   for (nNeuron = 0; nNeuron < neurons[nLayer].size(); nNeuron += 1)
     neurons[nLayer][nNeuron]->linkNewNeuron(newNeuron);
   initGradient(false);

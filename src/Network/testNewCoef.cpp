@@ -40,4 +40,7 @@ void			ef::Network::testNewCoef(Network			&network,
       testCoef.newScore = testScore;
       testCoef.isReverse = 1;
     }
+  neuron->switchReverse();
+  if (testCoef.modCoef != 1)
+    neuron->back();
 }

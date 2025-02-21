@@ -10,5 +10,5 @@ void			ef::NetworkCloner::waitJoin()
 {
   std::unique_lock<std::mutex>	lock(jobMutex);
 
-  main.wait(lock, [this] { return !(clones.size()) || joinOrder == nullptr; });
+  main.wait(lock, [this] { return !(clones.size()) || joinOrder.load() == nullptr; });
 }
