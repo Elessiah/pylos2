@@ -38,8 +38,6 @@ namespace				ef
     void				save(std::ofstream				&file) const;
     void				load(std::ifstream				&file);
     bool				verify();
-    double				retropropagation(int				idExam,
-							 double				speed);
     double				primaryLearning(std::vector<s_learnSubjects>	&subjects);
     double				learning(double					targetScore,
 						 int					idExam);
@@ -56,7 +54,6 @@ namespace				ef
     size_t				addLayer(bool					sync = true);
     size_t				addLayers(size_t				nbLayers,
 						  bool					sync = true);
-    void				calculGradient(std::vector<s_learnSubjects>	&subjects);
     void				textDisplay();
     bool				isFullSize();
     bool				isLayerFullSize(size_t				nLayer);
@@ -73,7 +70,6 @@ namespace				ef
     size_t				nbLinks;
     std::vector<std::vector<std::vector<double>>>	gradient;
     std::vector<double>			modCoef;
-    double				networkError;
     ef::NetworkCloner			cloner;
 
     void				compute();
@@ -96,14 +92,6 @@ namespace				ef
 						    s_testCoef				&testCoef);
     size_t				chooseLayerToAdd();
     void				unlinkLayer(size_t				nLayer);
-    void				initGradient(bool				onlyReset = false);
-    void				calculError(s_learnSubjects			&subject,
-						    std::vector<double>			&outputs,
-						    size_t				compteur);
-    void				calculGradient(s_learnSubjects			&subject,
-						       size_t				compteur);
-    void				calculRetropropagation(std::vector<s_learnSubjects>	&subjects);
-    void				applyRetropropagation(double			speed);
     void				syncCloneNetworks();
   };
 }

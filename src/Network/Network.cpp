@@ -9,7 +9,6 @@
 
 ef::Network::Network(std::vector<int>		&build)
   : modCoef({2, 1.5, 1.1, 1.001, 1, 0.999, 0.9, 0.5, 0.1, 0.001, 0})
-  , networkError(0)
 {
   size_t		i;
   int			nNeuron;
@@ -26,7 +25,6 @@ ef::Network::Network(std::vector<int>		&build)
 	    neurons[i].emplace_back(std::make_shared<Neuron>(neurons[i - 1]));
 	}
     }
-  initGradient(false);
   nbLinks = getNbLinks();
   //  cloner.addClones(*this, 3);
   cloner.addClones(*this, std::thread::hardware_concurrency());
@@ -35,11 +33,9 @@ ef::Network::Network(std::vector<int>		&build)
 
 ef::Network::Network(std::ifstream		&file)
   : modCoef({2, 1.5, 1.1, 1.001, 1, 0.999, 0.9, 0.5, 0.1, 0.001, 0})
-  , networkError(0)
 {
   srand(static_cast<unsigned>(std::time(0)));
   load(file);
-  initGradient(false);
   nbLinks = getNbLinks();
   //cloner.addClones(*this, 3);
   cloner.addClones(*this, std::thread::hardware_concurrency());
@@ -48,11 +44,9 @@ ef::Network::Network(std::ifstream		&file)
 
 ef::Network::Network(const Network		&other)
   : modCoef({2, 1.5, 1.1, 1.001, 1, 0.999, 0.9, 0.5, 0.1, 0.001, 0})
-  , networkError(0)
 {
   srand(static_cast<unsigned>(std::time(0)));
   *this = other;
-  initGradient(false);
 }
 
 ef::Network		&ef::Network::operator=(const Network	&other)
@@ -78,7 +72,6 @@ ef::Network		&ef::Network::operator=(const Network	&other)
   if (other != *this)
     std::cout << "Erreur dans opérateur = " << std::endl;
   syncCloneNetworks();
-  initGradient(false);
   return (*this);
 }
 
