@@ -56,7 +56,6 @@ ef::Network		&ef::Network::operator=(const Network	&other)
   std::vector<std::shared_ptr<Neuron>>	emptyLayer;
 
   neurons.clear();
-  networkError = 0;
   nbLinks = other.nbLinks;
   for (nLayer = 0; nLayer < other.neurons.size(); nLayer += 1)
     {

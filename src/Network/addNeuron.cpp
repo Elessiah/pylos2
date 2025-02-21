@@ -35,7 +35,6 @@ size_t				ef::Network::addNeuron(size_t		nLayer,
     std::cerr << "Erreur !! Ecriture hors vecteur !!" << std::endl;
   for (nNeuron = 0; nNeuron < neurons[nLayer].size(); nNeuron += 1)
     neurons[nLayer][nNeuron]->linkNewNeuron(newNeuron);
-  initGradient(false);
   if (sync)
     syncCloneNetworks();
   return (1);
