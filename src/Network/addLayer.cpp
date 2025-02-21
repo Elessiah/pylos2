@@ -15,7 +15,7 @@ size_t			ef::Network::addLayer(bool		sync)
   neurons.push_back(neurons[indexNewLayer]);
   neurons[indexNewLayer].clear();
   unlinkLayer(neurons.size() - 1);
-  nbNewNeurons = addNeurons(neurons[neurons.size() - 1].size() + 2, indexNewLayer, false);
+  nbNewNeurons = addNeurons(neurons[neurons.size() - 1].size(), indexNewLayer, false);
   if (sync)
     syncCloneNetworks();
   return (nbNewNeurons);

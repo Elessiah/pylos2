@@ -72,6 +72,8 @@ namespace				ef
     std::vector<double>			modCoef;
     ef::NetworkCloner			cloner;
 
+    void				builder(int					idExam);
+    void				builder(std::vector<s_learnSubjects>		&subjects);
     void				compute();
     double				averageVector(std::vector<double>		&values);
     size_t				getNbLinks();

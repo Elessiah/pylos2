@@ -15,7 +15,6 @@ std::vector<double>	ef::Network::getOutput()
   size_t		lastLayer;
   size_t		i;
 
-  compute();
   lastLayer = neurons.size() - 1;
   for (i = 0; i < neurons[lastLayer].size(); i += 1)
     result.emplace_back(neurons[lastLayer][i]->getOutput());

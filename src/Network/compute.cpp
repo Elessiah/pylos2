@@ -15,10 +15,7 @@ void			ef::Network::compute()
 
   for (nLayer = 1; nLayer < neurons.size(); nLayer += 1)
     {
-      // threadPool.setTasksTarget(neurons[nLayer].size());
       for (nNeuron = 0; nNeuron < neurons[nLayer].size(); nNeuron += 1)
 	neurons[nLayer][nNeuron]->compute();
-      // threadPool.addToQueue([this, nLayer, nNeuron]() { this->neurons[nLayer][nNeuron]->compute(); } );
-      // threadPool.waitAll();
     }
 }

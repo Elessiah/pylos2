@@ -39,8 +39,8 @@ double		ef::Network::learning(double				targetScore,
 	{
 	  if (!isFullSize())
 	    {
-	      std::cout << "\nNombre d'entraînements : " << nbPassage << std::endl;
-	      std::cout << "Ajout de " << addNeuron() << " neurones !" << std::endl;
+	      std::cout << "\nTraining count : " << nbPassage << std::endl;
+	      std::cout << "Adding " << addNeuron() << " neurons !" << std::endl;
 	      textDisplay();
 	    }
 	  else
@@ -51,9 +51,9 @@ double		ef::Network::learning(double				targetScore,
 	lastScore = currentScore;
       
     }
-  std::cout << "Nombre d'entraînements : " << nbPassage << std::endl;
+  std::cout << "Training count : " << nbPassage << std::endl;
   if (reachEnd)
-    std::cout << "Limite de l'entraînement atteinte." << std::endl;
+    std::cout << "Training limit has been reached !" << std::endl;
   textDisplay();
   return (currentScore);
 }
