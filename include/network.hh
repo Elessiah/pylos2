@@ -68,12 +68,9 @@ namespace				ef
   private:
     std::vector<std::vector<std::shared_ptr<Neuron>>>	neurons;
     size_t				nbLinks;
-    std::vector<std::vector<std::vector<double>>>	gradient;
     std::vector<double>			modCoef;
     ef::NetworkCloner			cloner;
 
-    void				builder(int					idExam);
-    void				builder(std::vector<s_learnSubjects>		&subjects);
     void				compute();
     double				averageVector(std::vector<double>		&values);
     size_t				getNbLinks();
